@@ -15,6 +15,29 @@ export class TasksService {
     private tasksRepository: TasksRepository,
   ) { }
 
+async getTasks(filterDto:GetTasksFilterDto):Promise<Task[]>
+{
+  const {status,search} = filterDto;
+    const query=this.tasksRepository.createQueryBuilder('task');
+
+    if(status)
+    {
+      query.andWhere('task.status = :status',{status})
+    }
+    if(search)
+    {
+      query.andWhere('LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',{search:`%${search}%`},);
+    }
+
+
+
+    const tasks=await query.getMany();
+
+   
+
+    return tasks;
+}
+
   // private tasks: Task[] = [];
 
   // getAllTasks(): Task[] {
@@ -77,7 +100,6 @@ export class TasksService {
     {
       throw new NotFoundException(`Task id ${id} not found`);
     }
-
  }
 
  async updateTaskStatus(id:string,status:TaskStatus):Promise<Task>
