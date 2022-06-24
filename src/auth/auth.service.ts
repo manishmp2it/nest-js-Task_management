@@ -1,10 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { UsersRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
+import { User } from './user.entity';
 
 
 @Injectable()
@@ -37,5 +38,24 @@ export class AuthService {
         else{
             throw new UnauthorizedException('please check your login credentials');
         }
+    }
+
+    async getUser():Promise<User[]>{
+
+        const users = await this.usersRepository.find({});
+
+
+         return users;
+    }
+
+    async deleteUser(id:string):Promise<void>{
+
+        const result = await this.usersRepository.delete({id})
+
+        if(result.affected===0)
+        {
+            throw new NotFoundException(`User Id not Found`);
+        }
+
     }
 }

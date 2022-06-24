@@ -14,7 +14,7 @@ import { JwtStrategy } from './jwt.strategy';
       secret:'topSecret51',
       signOptions:{
         expiresIn:7200,
-      }
+      },
     }),
     TypeOrmModule.forFeature([UsersRepository])],
   providers: [AuthService,JwtStrategy],

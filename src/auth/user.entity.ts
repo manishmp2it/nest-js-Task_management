@@ -13,7 +13,7 @@ export class User{
     @Column()
     password:string;
 
-    @OneToMany((_type)=>Task,(task)=>task.user,{eager:true}) 
+    @OneToMany((_type)=>Task,(task)=>task.user,{eager:true,cascade:true}) 
     tasks:Task[];
     
 }

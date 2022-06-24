@@ -8,7 +8,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor());
-  const port=4000;
+  
+  const port=8000;
   await app.listen(port);
 
   logger.log(`Application listening on port ${port}`)
