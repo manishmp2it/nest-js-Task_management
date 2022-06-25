@@ -7,7 +7,6 @@ export class CreateTaskDto {
 
   @IsNotEmpty()
   description: string;
-
   
   categoriesid:[]
 }

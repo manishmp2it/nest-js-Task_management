@@ -20,10 +20,13 @@ export class Task
     @Column()
     status:TaskStatus;
 
+    @Column({nullable:true})
+    path:string;
+
     @ManyToOne((_type)=>User,user => user.tasks, {eager:false,onDelete:"CASCADE"})
     @Exclude({toPlainOnly:true})
     user:User;
-
+    
     @ManyToMany(()=>Category,(category)=>category.tasks)
     @JoinTable()
     categories:Category[]
