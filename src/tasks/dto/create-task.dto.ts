@@ -1,4 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
+import { CreateCategoryDto } from 'src/categories/dto/create-category.dto';
 
 export class CreateTaskDto {
   @IsNotEmpty()
@@ -6,4 +7,7 @@ export class CreateTaskDto {
 
   @IsNotEmpty()
   description: string;
+
+  
+  categoriesid:[]
 }

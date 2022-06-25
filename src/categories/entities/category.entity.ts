@@ -1,8 +1,8 @@
 import { Task } from "src/tasks/task.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Category {
+export class Category extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
     id:string;

@@ -7,6 +7,7 @@ import { TasksRepository } from './tasks.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { User } from 'src/auth/user.entity';
+import { Category } from 'src/categories/entities/category.entity';
 
 @Injectable()
 export class TasksService {
@@ -22,7 +23,7 @@ async getTasks(filterDto:GetTasksFilterDto,user:User):Promise<Task[]>
 {
   const {status,search} = filterDto;
     const query=this.tasksRepository.createQueryBuilder('task');
-    query.where({user});
+    query.where({user}).leftJoinAndSelect("task.categories", "categories");
 
     if(status)
     {
@@ -62,14 +63,24 @@ async getTasks(filterDto:GetTasksFilterDto,user:User):Promise<Task[]>
   }
 
   async createTask(createTaskDto: CreateTaskDto,user:User ): Promise<Task> {
-    const { title, description } = createTaskDto;
+    const { title, description,categoriesid } = createTaskDto;
+    let categories=[];
+
+    for ( let i = 0; i < categoriesid.length ; i++)
+    {
+             const genre = await Category.findOne(categoriesid[i])
+             categories.push(genre);
+    }
 
     const task = this.tasksRepository.create({
       title,
       description,
+      categories,
       status: TaskStatus.OPEN,
       user,
     });
+
+    
 
     await this.tasksRepository.save(task);
     return task;
